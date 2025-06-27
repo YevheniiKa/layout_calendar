@@ -1,0 +1,75 @@
+@import 'vars';
+
+body,
+ul,
+li,
+div {
+  margin: 0;
+  list-style: none;
+  box-sizing: border-box;
+}
+
+.container {
+  margin: 82px 154px;
+}
+
+.calendar {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+
+  gap: $gap;
+  padding: 0 $padding-horizontal;
+  width: calc(
+    (#{$cols} * #{$col-width}) + ((#{$cols} - 1) * #{$gap}) + 2 * #{$padding-horizontal}
+  );
+
+  @for $i from 28 through 32 {
+    &--month-length-#{$i} {
+      @for $n from ($i + 1) through 32 {
+        .calendar__day:nth-child(#{$n}) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  @each $name, $col in $days {
+    &--start-day-#{$name} {
+      .calendar__day:first-child {
+        margin-left: calc((#{$col - 1}) * 101px);
+      }
+    }
+  }
+}
+
+.calendar__day {
+  @for $i from 1 through 31 {
+    &:nth-child(#{$i}) {
+      font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+      font-size: 30px;
+
+      width: 100px;
+      height: 100px;
+
+      background-color: $cell-bg;
+      border: 1px solid #000;
+
+      &::before {
+        height: 98px;
+        content: '#{$i}';
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      &:hover {
+        cursor: pointer;
+        background-color: $hover-cell-bg;
+        transform: translateY(-20px);
+        transition-duration: 0.5s;
+      }
+    }
+  }
+}
